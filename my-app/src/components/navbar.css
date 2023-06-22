@@ -1,0 +1,167 @@
+.nav__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 6vw;
+}
+
+
+
+
+/* logo */
+/* logo */
+.logo {
+    cursor: pointer;
+}
+
+
+
+
+/* nav links */
+/* nav links */
+
+.nav__links {
+    display: flex;
+    align-items: center;
+    gap: 3vw;
+    width: fit-content;
+}
+
+.link {
+    font-weight: var(--normal-font-weight);
+    color: var(--secondory-color);
+    transition: var(--transition-3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+}
+
+.link:hover {
+    color: var(--primary-color);
+}
+
+.active {
+    color: var(--primary-color) !important;
+}
+
+.none {
+    display: none;
+}
+
+.icon__none{
+    display: none;
+}
+
+
+
+
+
+
+/* buttons */
+/* buttons */
+
+.nav__icons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.cart__icon {
+    cursor: pointer;
+    font-size: var(--icon-size);
+    color: var(--secondory-color);
+    transition: var(--transition-3);
+}
+
+.cart__icon:hover {
+    color: var(--primary-color);
+}
+
+.cart__active{
+    color: var(--primary-color);
+}
+
+
+
+
+
+
+/* menu icon*/
+
+.menu {
+    background-color: var(--white-color);
+    box-shadow: var(--shadow-hover);
+    border-radius: 6px;
+    padding: 10px;
+    z-index: 999;
+    display: none;
+    right: 30px;
+    top: 86px;
+}
+
+.menu i {
+    font-size: var(--icon-size);
+    color: var(--primary-color);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width:714px) {
+    .menu {
+        display: block;
+        position: fixedl;
+        top: 36px;
+        right: 30px;
+    }
+
+    .nav__links {
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        background-color: var(--white-color);
+        position: fixed;
+        top: 50%;
+        left: -60%;
+        transform: translate(-50%, -50%);
+        justify-content: center;
+        flex-direction: column;
+        transition: var(--transition-3);
+        box-shadow: var(--shadow-hover);
+    }
+
+
+    .active__navbar {
+        left: 50%;
+    }
+
+    .icon__none{
+        display: block;
+    }
+
+}
+
+
+@media (max-width:370px) {
+
+    .nav__bar .btn {
+        display: none;
+    }
+    
+    .none {
+        display: block;
+    }
+
+}
