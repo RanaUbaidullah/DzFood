@@ -244,7 +244,7 @@ body {
 /* app section */
 
 .app__section {
-    /* background-image: url(../img/appsection.png); */
+    background-image: url(../../../../public/img/appsection.png);
     background-size: cover;
     background-repeat: no-repeat;
     display: flex;
