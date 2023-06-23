@@ -1,22 +1,40 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './login.css'
 import { Link } from 'react-router-dom'
-function login() {
+import {Config} from '../../constant/Index'
+function Login() {
 
-    fetch 
-
+    const [users, setUsers] = useState([])
+    
+      fetch(`${Config.serverUrl}api/login`, {
+     
+        // Adding method type
+        method: "POST",
+         
+        // Adding body or contents to send
+        body: JSON.stringify({
+            email: "ziabzu@gmail.com",
+            password: "Test1234"
+        }),
+         
+        // Adding headers to the request
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+    console.log(fetch)
   return (
     <>
     {/* <!-- login section --> */}
-    <div class="login__section">
+    <div className="login__section">
 
-        <div class="login__img">
+        <div className="login__img">
             <img src="img/loginimg.png" alt="Food 3d image"/>
         </div>
 
-        <form class="login__form">
+        <form className="login__form">
 
-            <h1 class="title login__title">
+            <h1 className="title login__title">
 
                 Welcome back to
                 <br/>
@@ -26,12 +44,12 @@ function login() {
 
             </h1>
 
-            <div class="form__inputs">
+            <div className="form__inputs">
 
 
-                <div class="input">
+                <div className="input">
 
-                    <label for="input">
+                    <label htmlFor="input">
                         Email or Phone No.
                     </label>
 
@@ -40,12 +58,12 @@ function login() {
                 </div>
 
 
-                <div class="input">
+                <div className="input">
 
-                    <label for="input">
+                    <label htmlFor="input">
                         Password
 
-                        <Link to="forget.html" class="underline">
+                        <Link to="forget.html" className="underline">
                             Forget Password ?
                         </Link>
 
@@ -56,30 +74,30 @@ function login() {
                 </div>
 
 
-                <div class="checkbox">
+                <div className="checkbox">
 
                     <input type="checkbox"/>
 
                     Stay
-                    <span class="underline">
+                    <span className="underline">
                         Logged In
-                    </span>
+                    </span>   
 
                 </div>
 
             </div>
 
 
-            <button class="btn">
+            <button className="btn">
                 Login
             </button>
 
 
-            <span class="sign__up">
+            <span className="sign__up">
 
                 Don't have an Account ?
 
-                <Link to="signup.html" class="underline">
+                <Link to="signup.html" className="underline">
                     Sign Up
                 </Link>
 
@@ -92,4 +110,4 @@ function login() {
   )
 }
 
-export default login
+export default Login

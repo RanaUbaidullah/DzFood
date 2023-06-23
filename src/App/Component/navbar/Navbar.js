@@ -7,35 +7,35 @@ function Navbar() {
      {/* <!-- nav__bar --> */}
     {/* <!-- nav__bar --> */}
 
-    <nav class="nav__bar">
+    <nav  className="nav__bar">
 
         {/* <!-- logo --> */}
 
-        <Link to='/' class="logo">
+        <Link to='/'  className="logo">
             <img src="img/logo.png" alt=""/>
         </Link>
 
 
         {/* <!-- navbar links --> */}
 
-        <div class="nav__links" id="nav__links">
+        <div  className="nav__links" id="nav__links">
 
-            <Link class="link" to="index.html">
+            <Link  className="link" to="index.html">
                 Why Us?
             </Link>
-            <Link class="link" to="about.html">
+            <Link  className="link" to="about.html">
                 About
             </Link>
-            <Link class="link" to="menu.html">
+            <Link  className="link" to="menu.html">
                 Menu
             </Link>
-            <Link class="link active none" to="cart.html">
+            <Link  className="link active none" to="cart.html">
                 Cart
             </Link>
-            <Link class="link none" to="login.html">
+            <Link  className="link none" to="login.html">
                 Log In
             </Link>
-            <Link class="link" to="contact.html">
+            <Link  className="link" to="contact.html">
                 Contact
             </Link>
 
@@ -43,15 +43,15 @@ function Navbar() {
 
         {/* <!-- navbar links --> */}
 
-        <div class="nav__icons">
+        <div  className="nav__icons">
 
-            <Link to="cart.html" class="active">
-                <i class='bx bx-shopping-bag cart__icon active'></i>
+            <Link to="cart.html"  className="active">
+                <i  className='bx bx-shopping-bag cart__icon active'></i>
             </Link>
 
-            <Link to="login" class="btn">
+            <Link to="login"  className="btn">
 
-                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <i  className="fa-solid fa-arrow-right-to-bracket"></i>
 
                 <Link to="login">Log In</Link>
 
@@ -60,8 +60,8 @@ function Navbar() {
 
         </div>
 
-        <div class="menu" id="menu">
-            <i class="fa-solid fa-bars"></i>
+        <div  className="menu" id="menu">
+            <i  className="fa-solid fa-bars"></i>
         </div>
 
     </nav>
