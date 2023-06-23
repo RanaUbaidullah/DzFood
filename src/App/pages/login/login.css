@@ -1,0 +1,116 @@
+.login__section {
+    padding: var(--section-padding);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 80vh;
+}
+
+.login__img {
+    max-width: 100%;
+}
+
+.login__img img {
+    width: 100%;
+    padding: 30px 0vw;
+}
+
+.login__title {
+    font-size: var(--normal-heading);
+    font-weight: var(--bold-font-weight);
+    color: var(--secondry-color);
+    text-align: center;
+}
+
+.title span {
+    color: var(--primary-color);
+}
+
+.login__form {
+    max-width: 500px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 20px;
+}
+
+.form__inputs {
+    width: 110%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input label {
+    color: var(--secondry-color);
+    font-size: var(--medium-size);
+    font-weight: var(--normal-font-weight);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.input input {
+    color: var(--primary-color);
+    border: 1.2px solid var(--primary-color);
+    padding: 16px 20px;
+    border-radius: 40px;
+    outline: 0;
+}
+
+.input input::placeholder{
+    color: var(--primary-color);
+}
+
+.input input:focus {
+    border: 2px solid var(--primary-color);
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+@media (max-width:1048px) {
+    .login__section {
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .input input {
+        padding: 8px 14px;
+    }
+}
+
+
+@media (max-width:456px) {
+
+    input[type="checkbox"]{
+        width: 16px;
+        height: 16px;
+    }
+
+    input:checked::before {
+        content: "\2713";
+        display: inline-block;
+        background-color: var(--primary-color);
+        text-align: center;
+        line-height: 10px;
+        color: white;
+        font-size: 14px;
+        position: absolute;
+        inset: 0;
+    }
+
+}

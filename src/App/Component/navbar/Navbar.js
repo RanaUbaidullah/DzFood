@@ -1,5 +1,6 @@
 import React from 'react'
 import './navbar.css'
+import { Link } from 'react-router-dom'
 function Navbar() {
   return (
     <>
@@ -10,33 +11,33 @@ function Navbar() {
 
         {/* <!-- logo --> */}
 
-        <div class="logo">
+        <Link to='/' class="logo">
             <img src="img/logo.png" alt=""/>
-        </div>
+        </Link>
 
 
         {/* <!-- navbar links --> */}
 
         <div class="nav__links" id="nav__links">
 
-            <a class="link" href="index.html">
+            <Link class="link" to="index.html">
                 Why Us?
-            </a>
-            <a class="link" href="about.html">
+            </Link>
+            <Link class="link" to="about.html">
                 About
-            </a>
-            <a class="link" href="menu.html">
+            </Link>
+            <Link class="link" to="menu.html">
                 Menu
-            </a>
-            <a class="link active none" href="cart.html">
+            </Link>
+            <Link class="link active none" to="cart.html">
                 Cart
-            </a>
-            <a class="link none" href="login.html">
+            </Link>
+            <Link class="link none" to="login.html">
                 Log In
-            </a>
-            <a class="link" href="contact.html">
+            </Link>
+            <Link class="link" to="contact.html">
                 Contact
-            </a>
+            </Link>
 
         </div>
 
@@ -44,16 +45,17 @@ function Navbar() {
 
         <div class="nav__icons">
 
-            <a href="cart.html" class="active">
+            <Link to="cart.html" class="active">
                 <i class='bx bx-shopping-bag cart__icon active'></i>
-            </a>
+            </Link>
 
-            <div class="btn">
+            <Link to="login" class="btn">
 
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
 
-                <a href="login.html">Log In</a>
-            </div>
+                <Link to="login">Log In</Link>
+
+            </Link>
 
 
         </div>
