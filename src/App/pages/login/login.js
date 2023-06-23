@@ -2,27 +2,47 @@ import React, {useState} from 'react'
 import './login.css'
 import { Link } from 'react-router-dom'
 import {Config} from '../../constant/Index'
+import { setLocalStorage } from '../../Component/local_storage'
 function Login() {
 
-    const [users, setUsers] = useState([])
-    
-      fetch(`${Config.serverUrl}api/login`, {
-     
-        // Adding method type
-        method: "POST",
-         
-        // Adding body or contents to send
-        body: JSON.stringify({
-            email: "ziabzu@gmail.com",
-            password: "Test1234"
-        }),
-         
-        // Adding headers to the request
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
+    const [data, setData] = useState({
+        email: "",
+        password: ""
     })
-    console.log(fetch)
+    
+    const log1 = async (e) => {
+        e.preventDefault(); 
+        const response =await fetch(`${Config.serverUrl}api/login`, {
+     
+            // Adding method type 
+            method: "POST",
+            headers: {
+                
+                // Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            // Adding body or contents to send
+            body: JSON.stringify({
+                email: "ziabzu@gmail.com",
+                password: "Test1234"
+            }),
+             
+            // Adding headers to the request
+           
+            
+        })
+        if (response.ok) {
+            const responseData = await response.json();
+            // const { access_token, token_type } = responseData.data;
+
+            setLocalStorage(Config.userDzFoodToken,responseData.data.access_token)
+         
+            // Perform further operations with the access token and token type
+        } else {
+            console.error("Error:", response.status);
+        }
+    
+    } 
   return (
     <>
     {/* <!-- login section --> */}
@@ -53,7 +73,11 @@ function Login() {
                         Email or Phone No.
                     </label>
 
-                    <input type="text" placeholder="Email or Phone No."/>
+                    <input 
+                    onChange={filedChange}
+                    type="text" 
+                    placeholder="Email or Phone No."
+                    />
 
                 </div>
 
@@ -69,7 +93,11 @@ function Login() {
 
                     </label>
 
-                    <input type="text" placeholder="Password"/>
+                    <input 
+                    onChange={filedChange}
+                    type="text" 
+                    placeholder="Password"
+                    />
 
                 </div>
 
@@ -79,7 +107,7 @@ function Login() {
                     <input type="checkbox"/>
 
                     Stay
-                    <span className="underline">
+                    <span className="underline" >
                         Logged In
                     </span>   
 
@@ -88,7 +116,7 @@ function Login() {
             </div>
 
 
-            <button className="btn">
+            <button className="btn" onClick={log1}>
                 Login
             </button>
 

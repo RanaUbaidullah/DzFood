@@ -10,7 +10,7 @@ export const Config = {
   serverUrlCategoryImages: serverUrl + 'images/categories/',
   serverUrlProductImages: serverUrl + 'public/images/products/',
   serverUrlUserImages: serverUrl + 'public/images/users/',
-  adminApiTokenName: 'admin-login-token',
+  userDzFoodToken: 'user-dzfood-login-token',
   roleName: 'role',
   email: 'email',
   verificationCode: 'verifiactionCode',
