@@ -1,7 +1,14 @@
 import React from 'react'
 import './navbar.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { getLocalStorage} from '../../Component/local_storage'
+import { Config } from '../../constant/Index'
 function Navbar() {
+const navigate=useNavigate();
+    const logout=()=>{
+        localStorage.removeItem(Config.userDzFoodToken)
+        navigate('/')
+    }
   return (
     <>
      {/* <!-- nav__bar --> */}
@@ -48,14 +55,29 @@ function Navbar() {
             <Link to="cart.html"  className="active">
                 <i  className='bx bx-shopping-bag cart__icon active'></i>
             </Link>
+            {
+                        // console.log(getLocalStorage('userDzfoodLoginToken'))
+                    getLocalStorage(Config.userDzFoodToken) ?
+                    (
+                        <Link to="login"  className="btn">
 
-            <Link to="login"  className="btn">
+                <i  className="fa-solid fa-arrow-right-to-bracket"></i>
+
+                <Link to="login"  onClick={logout}>Log Out</Link>
+
+            </Link>
+                    ): (
+                        <Link to="login"  className="btn">
 
                 <i  className="fa-solid fa-arrow-right-to-bracket"></i>
 
                 <Link to="login">Log In</Link>
 
             </Link>
+                    )
+
+
+            }
 
 
         </div>
