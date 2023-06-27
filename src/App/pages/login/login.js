@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Config } from '../../constant/Index'
 import { setLocalStorage} from '../../Component/local_storage'
 function Login() {
+    const [showPopup, setShowPopup] = useState(false); // State for showing/hiding the popup
 
    const navigate= useNavigate();
     const [data, setData] = useState({
@@ -32,8 +33,8 @@ function Login() {
             },
             // Adding body or contents to send
             body: JSON.stringify({
-                email: data.email,
-                password: data.password
+                email: data?.email,
+                password: data?.password
             }),
 
             // Adding headers to the request
@@ -43,12 +44,19 @@ function Login() {
         if (response.ok) {
             const responseData = await response.json();
             // const { access_token, token_type } = responseData.data;
-
-            setLocalStorage(Config.userDzFoodToken, responseData.data.access_token)
+            console.log(responseData)
+            if(responseData.message == "successfully"){
+            setLocalStorage(Config.userDzFoodToken, responseData?.data?.access_token)
             navigate('/')
             // Perform further operations with the access token and token type
+        }else{
+        console.log('error')
+        setShowPopup(true);
+        }
+
         } else {
             console.error("Error:", response.status);
+            
         }
 
     }
@@ -148,6 +156,20 @@ function Login() {
                 </form>
 
             </div>
+
+                  {/* Popup for invalid credentials */}
+      {showPopup && (
+        <div className="popup">
+          <div className="popup__content">
+            <h2>Invalid Credentials</h2>
+            <p>Please enter valid username and password.</p>
+            <button className="btn" onClick={() => setShowPopup(false)}>
+              OK
+            </button>
+          </div>
+        </div>
+
+      )}
         </>
     )
 }

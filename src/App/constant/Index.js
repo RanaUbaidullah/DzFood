@@ -6,6 +6,7 @@ export const Config = {
   secretPass: "XkhZG4fW2t2W",
   serverUrl: serverUrl,
   serverApiUrl: serverUrl + 'api/',
+  serverUrlProduct: serverUrl + 'api/products',
   serverUrlImages: serverUrl + 'public/images/',
   serverUrlCategoryImages: serverUrl + 'images/categories/',
   serverUrlProductImages: serverUrl + 'public/images/products/',
