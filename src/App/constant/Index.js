@@ -7,6 +7,7 @@ export const Config = {
   serverUrl: serverUrl,
   serverApiUrl: serverUrl + 'api/',
   serverUrlProduct: serverUrl + 'api/products',
+  serverUrlMe: serverUrl + 'api/me',
   serverUrlImages: serverUrl + 'public/images/',
   serverUrlCategoryImages: serverUrl + 'images/categories/',
   serverUrlProductImages: serverUrl + 'public/images/products/',

@@ -52,8 +52,8 @@
 
 .card img {
     border-radius: 12px 12px 0px 0px;
-    width: 350px;
-    height: 210px;
+    width: 360px;
+    height: 220px;
 }
 
 .title__price {
@@ -127,9 +127,16 @@
 /* mobile screen */
 /* mobile screen */
 
+@media (max-width:467px) {
+    .card img{
+        width: 280px;
+        height: 160px;
+    }
+}
+
 @media (max-width:420px) {
     .card{
-        width: 320px;
+        width: fit-content;
     }
 }
 
@@ -138,7 +145,7 @@
 
 @media (max-width:320px) {
     .card{
-        width: 260px;
+        width: fit-content;
     }
 
     .add{

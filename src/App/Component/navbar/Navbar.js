@@ -1,15 +1,15 @@
-import React from 'react';
-import './navbar.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { getLocalStorage } from '../../Component/local_storage';
-import { Config } from '../../constant/Index';
+import React from "react";
+import "./navbar.css";
+import { Link, useNavigate } from "react-router-dom";
+import { getLocalStorage } from "../../Component/local_storage";
+import { Config } from "../../constant/Index";
 
 function Navbar() {
   const navigate = useNavigate();
 
   const logout = () => {
     localStorage.removeItem(Config.userDzFoodToken);
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -45,6 +45,10 @@ function Navbar() {
 
         {/* navbar links */}
         <div className="nav__icons">
+          {getLocalStorage(Config.userDzFoodToken) ?
+            <Link to="/favourite" className="active">
+            <i className="fa-regular fa-heart cart__icon active"></i>
+          </Link>: null}
           <Link to="/cart" className="active">
             <i className="bx bx-shopping-bag cart__icon active"></i>
           </Link>
