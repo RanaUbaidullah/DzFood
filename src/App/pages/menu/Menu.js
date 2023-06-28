@@ -6,6 +6,9 @@ function Menu() {
   const [show, setShow] = useState(false);
   const [data, setData] = useState();
   const [catadata, setCatadata] = useState();
+  const [aimg, setAimg] = useState();
+  const img = fetch(`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${data.image}`);
+  setAimg(img);
 
   const fetchData = async () => {
     try {
@@ -97,7 +100,13 @@ function Menu() {
                 <i className="fa-regular fa-heart"  />
               </div>
               <img
+              {
+                if(aimg){
                 src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${data.image}`}
+              } else{
+                src=""
+              }
+              }
                 alt="product img"
               />
               <div className="menu__content">
