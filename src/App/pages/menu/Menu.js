@@ -5,19 +5,32 @@ import { Config } from "../../constant/Index";
 function Menu() {
   const [show, setShow] = useState(false);
   const [data, setData] = useState();
+  const [catadata, setCatadata] = useState();
 
   const fetchData = async () => {
     try {
       const response = await fetch(Config.serverUrlProduct);
       const jsonData = await response.json();
       setData(jsonData.data);
-      console.log(data);
+      // console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const fetchDatacata = async () => {
+    try {
+      const response = await fetch(Config.serverUrlCategories);
+      const jsonData = await response.json();
+      setCatadata(jsonData.data);
+      console.log(catadata);
+      console.log("catadata"); 
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
+    fetchDatacata();
     fetchData();
   }, []);
 
@@ -73,7 +86,7 @@ function Menu() {
 
         <div className="menu__cards">
           {data.map((data) => (
-            <div className="card">
+            <div key={data.id} className="card">
               {/* card rating */}
               <div className="rating">
                 <h4>{data?.stars}</h4>
@@ -81,7 +94,7 @@ function Menu() {
                 <span>({data?.cooking_time}+)</span>
               </div>
               <div className="heart">
-                <i className="fa-regular fa-heart" onClick="changeClass(this)" />
+                <i className="fa-regular fa-heart"  />
               </div>
               <img
                 src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${data.image}`}
