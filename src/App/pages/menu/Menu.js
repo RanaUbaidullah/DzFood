@@ -7,32 +7,32 @@ function Menu() {
   const [data, setData] = useState();
   const [catadata, setCatadata] = useState();
   const [aimg, setAimg] = useState();
-  const img = fetch(`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${data.image}`);
-  setAimg(img);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(Config.serverUrlProduct);
-      const jsonData = await response.json();
-      setData(jsonData.data);
-      // console.log(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  const fetchDatacata = async () => {
-    try {
-      const response = await fetch(Config.serverUrlCategories);
-      const jsonData = await response.json();
-      setCatadata(jsonData.data);
-      console.log(catadata);
-      console.log("catadata"); 
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(Config.serverUrlProduct);
+        const jsonData = await response.json();
+        setData(jsonData.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const fetchDatacata = async () => {
+      try {
+        const response = await fetch(Config.serverUrlCategories);
+        const jsonData = await response.json();
+        setCatadata(jsonData.data);
+        console.log(catadata);
+        console.log("catadata");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchDatacata();
     fetchData();
   }, []);
@@ -41,9 +41,13 @@ function Menu() {
     setShow((prevState) => !prevState);
   };
 
-  if (!data || data.length === 0) {
+  if (loading) {
     return <div>Loading...</div>;
   }
+
+  const handleImageLoad = (image) => {
+    setAimg(`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${image}`);
+  };
 
   return (
     <>
@@ -88,46 +92,41 @@ function Menu() {
         </div>
 
         <div className="menu__cards">
-          {data.map((data) => (
-            <div key={data.id} className="card">
-              {/* card rating */}
-              <div className="rating">
-                <h4>{data?.stars}</h4>
-                <i className="fa-solid fa-star" />
-                <span>({data?.cooking_time}+)</span>
-              </div>
-              <div className="heart">
-                <i className="fa-regular fa-heart"  />
-              </div>
-              <img
-              {
-                if(aimg){
-                src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${data.image}`}
-              } else{
-                src=""
-              }
-              }
-                alt="product img"
-              />
-              <div className="menu__content">
-                <div className="title__price">
-                  <h3 className="card__title">{data?.title?.en}</h3>
-                  <span className="price">
-                    Rs {data?.price ? data?.price : 0}
-                  </span>
+          {data &&
+            data.map((item) => (
+              <div key={item.id} className="card">
+                <div className="rating">
+                  <h4>{item?.stars}</h4>
+                  <i className="fa-solid fa-star" />
+                  <span>({item?.cooking_time}+)</span>
                 </div>
-                <div className="time">
-                  <i className="fa-solid fa-stopwatch" />
-                  <span>10-15 mins</span>
+                <div className="heart">
+                  <i className="fa-regular fa-heart" />
                 </div>
-                <div className="food__type">
-                  <span className="type">Burger</span>
-                  <span className="type">Chicken</span>
-                  <span className="type">Fast Food</span>
+                <img
+                  onLoad={() => handleImageLoad(item.image)}
+                  src={aimg || "img/picture-not-available.jpg"}
+                  alt="product img"
+                />
+                <div className="menu__content">
+                  <div className="title__price">
+                    <h3 className="card__title">{item?.title?.en}</h3>
+                    <span className="price">
+                      Rs {item?.price ? item?.price : 0}
+                    </span>
+                  </div>
+                  <div className="time">
+                    <i className="fa-solid fa-stopwatch" />
+                    <span>10-15 mins</span>
+                  </div>
+                  <div className="food__type">
+                    <span className="type">Burger</span>
+                    <span className="type">Chicken</span>
+                    <span className="type">Fast Food</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </>
