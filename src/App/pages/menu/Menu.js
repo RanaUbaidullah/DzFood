@@ -18,6 +18,7 @@ function Menu() {
         const jsonData = await response.json();
         setData(jsonData.data);
         setLoading(false);
+        console.log(data)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -71,9 +72,9 @@ function Menu() {
 
   const sortedItems = currentItems.sort((a, b) => {
     if (sortOption === "newest") {
-      return new Date(b.created_at) - new Date(a.created_at);
+      return b.id - a.id;
     } else if (sortOption === "oldest") {
-      return new Date(a.created_at) - new Date(b.created_at);
+      return a.id - b.price;
     } else if (sortOption === "price") {
       return a.price - b.price;
     } else if (sortOption === "rating") {
@@ -96,8 +97,11 @@ function Menu() {
       <div className="menu__section">
         <div className="category__filter">
           <div className="categories">
+          <a  href="@" className="category active">
+              All
+              </a>
             {catadata.map((item) => (
-              <a key={item.id} href="@" className="category active">
+              <a key={item.id} href="@" className="category">
                 {item.name.en}
               </a>
             ))}
@@ -153,7 +157,7 @@ function Menu() {
                 </div>
                 <div className="time">
                   <i className="fa-solid fa-stopwatch" />
-                  <span>10-15 mins</span>
+                  <span>{item.cooking_time} mins</span>
                 </div>
                 <div className="food__type">
                   <span className="type">Burger</span>
