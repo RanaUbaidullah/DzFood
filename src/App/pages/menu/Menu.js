@@ -10,6 +10,7 @@ function Menu() {
   const [itemsPerPage] = useState(8);
   const [catadata, setCatadata] = useState([]);
   const [sortOption, setSortOption] = useState("price");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +19,6 @@ function Menu() {
         const jsonData = await response.json();
         setData(jsonData.data);
         setLoading(false);
-        console.log(data)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -29,7 +29,6 @@ function Menu() {
         const response = await fetch(Config.serverUrlCategories);
         const jsonData = await response.json();
         setCatadata(jsonData.data);
-        console.log(catadata);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -61,9 +60,15 @@ function Menu() {
     }
   };
 
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
+  const filteredItems = selectedCategory === "All" ? data : data.filter(item => item.category_id === selectedCategory);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const sortItems = (option) => {
     setSortOption(option);
@@ -88,7 +93,7 @@ function Menu() {
   };
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -97,18 +102,25 @@ function Menu() {
       <div className="menu__section">
         <div className="category__filter">
           <div className="categories">
-          <a  href="@" className="category active">
+            <div
+              className={`category ${selectedCategory === "All" ? "active" : ""}`}
+              onClick={() => handleCategoryClick("All")}
+            >
               All
-              </a>
+            </div>
             {catadata.map((item) => (
-              <a key={item.id} href="@" className="category">
+              <div
+                key={item.id}
+                className={`category ${selectedCategory === item.id ? "active" : ""}`}
+                onClick={() => handleCategoryClick(item.id)}
+              >
                 {item.name.en}
-              </a>
+              </div>
             ))}
           </div>
 
           <div className="filter">
-            <span className="sort">Sort by :</span>
+            <span className="sort">Sort by:</span>
             <div className="selected" id="sort" onClick={toggleOptions}>
               <span>{sortOption}</span>
               <i className="bx bx-chevron-down" />

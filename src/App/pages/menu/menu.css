@@ -35,7 +35,7 @@
     background-color: var(--white-color);
     color: var(--secondry-color);
     padding: 6px 12px;
-    border-radius: 50px;
+    border-radius: 8px;
     min-width: fit-content;
     transition: var(--transition-3);
 }
