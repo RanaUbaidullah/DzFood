@@ -9,9 +9,10 @@ function Menu() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(8);
   const [catadata, setCatadata] = useState([]);
-  const [sortOption, setSortOption] = useState("price");
+  const [sortOption, setSortOption] = useState("Price");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  // Fetching product data and category data on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +43,7 @@ function Menu() {
     setShow((prevState) => !prevState);
   };
 
+  // Show a loader while fetching data
   if (loading) {
     return (
       <img
@@ -52,6 +54,7 @@ function Menu() {
     );
   }
 
+  // Function to handle image load and provide a fallback image if image is not available
   const handleImageLoad = (image) => {
     if (image == null) {
       return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png";
@@ -60,38 +63,44 @@ function Menu() {
     }
   };
 
+  // Function to handle category selection and reset pagination to the first page
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
 
+  // Filtering the items based on the selected category
   const filteredItems = selectedCategory === "All" ? data : data.filter(item => item.category_id === selectedCategory);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
-  const sortItems = (option) => {
-    setSortOption(option);
+  // Function to handle sorting and reset pagination to the first page
+  const sortItems = (Option) => {
+    setSortOption(Option);
     setCurrentPage(1);
   };
 
+  // Sorting the current items based on the selected sorting option
   const sortedItems = currentItems.sort((a, b) => {
-    if (sortOption === "newest") {
+    if (sortOption === "Newest") {
       return b.id - a.id;
-    } else if (sortOption === "oldest") {
+    } else if (sortOption === "Oldest") {
       return a.id - b.price;
-    } else if (sortOption === "price") {
+    } else if (sortOption === "Price") {
       return a.price - b.price;
-    } else if (sortOption === "rating") {
+    } else if (sortOption === "Rating") {
       return b.stars - a.stars;
     }
     return 0;
   });
 
+  // Function to handle pagination and set the current page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  // Generating an array of page numbers based on the total items and items per page
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
     pageNumbers.push(i);
@@ -127,16 +136,16 @@ function Menu() {
             </div>
             {show && (
               <div className="options" id="options">
-                <span className="option" onClick={() => sortItems("rating")}>
+                <span className="option" onClick={() => sortItems("Rating")}>
                   Rating
                 </span>
-                <span className="option" onClick={() => sortItems("price")}>
+                <span className="option" onClick={() => sortItems("Price")}>
                   Price
                 </span>
-                <span className="option" onClick={() => sortItems("newest")}>
+                <span className="option" onClick={() => sortItems("Newest")}>
                   Newest
                 </span>
-                <span className="option" onClick={() => sortItems("oldest")}>
+                <span className="option" onClick={() => sortItems("Oldest")}>
                   Oldest
                 </span>
               </div>
