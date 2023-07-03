@@ -8,6 +8,8 @@ function Menu() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(8);
+  const [catadata, setCatadata] = useState([]);
+  const [sortOption, setSortOption] = useState("price");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +23,19 @@ function Menu() {
       }
     };
 
+    const fetchDatacata = async () => {
+      try {
+        const response = await fetch(Config.serverUrlCategories);
+        const jsonData = await response.json();
+        setCatadata(jsonData.data);
+        console.log(catadata);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchData();
+    fetchDatacata();
   }, []);
 
   const toggleOptions = () => {
@@ -29,7 +43,13 @@ function Menu() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <img
+        className="loader"
+        src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921"
+        alt="logo"
+      />
+    );
   }
 
   const handleImageLoad = (image) => {
@@ -43,6 +63,24 @@ function Menu() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  const sortItems = (option) => {
+    setSortOption(option);
+    setCurrentPage(1);
+  };
+
+  const sortedItems = currentItems.sort((a, b) => {
+    if (sortOption === "newest") {
+      return new Date(b.created_at) - new Date(a.created_at);
+    } else if (sortOption === "oldest") {
+      return new Date(a.created_at) - new Date(b.created_at);
+    } else if (sortOption === "price") {
+      return a.price - b.price;
+    } else if (sortOption === "rating") {
+      return b.stars - a.stars;
+    }
+    return 0;
+  });
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -58,45 +96,40 @@ function Menu() {
       <div className="menu__section">
         <div className="category__filter">
           <div className="categories">
-            <a href="@" className="category active">
-              ALL
-            </a>
-            <a href="@" className="category">
-              Burger
-            </a>
-            <a href="@" className="category">
-              Pizza
-            </a>
-            <a href="@" className="category">
-              Icecream
-            </a>
-            <a href="@" className="category">
-              Deserts
-            </a>
-            <a href="@" className="category">
-              Deserts
-            </a>
+            {catadata.map((item) => (
+              <a key={item.id} href="@" className="category active">
+                {item.name.en}
+              </a>
+            ))}
           </div>
+
           <div className="filter">
             <span className="sort">Sort by :</span>
             <div className="selected" id="sort" onClick={toggleOptions}>
-              <span>Price</span>
+              <span>{sortOption}</span>
               <i className="bx bx-chevron-down" />
             </div>
-
-            {show ? (
+            {show && (
               <div className="options" id="options">
-                <span className="option">Rating</span>
-                <span className="option">Price</span>
-                <span className="option">Newest</span>
-                <span className="option">Oldest</span>
+                <span className="option" onClick={() => sortItems("rating")}>
+                  Rating
+                </span>
+                <span className="option" onClick={() => sortItems("price")}>
+                  Price
+                </span>
+                <span className="option" onClick={() => sortItems("newest")}>
+                  Newest
+                </span>
+                <span className="option" onClick={() => sortItems("oldest")}>
+                  Oldest
+                </span>
               </div>
-            ) : null}
+            )}
           </div>
         </div>
 
         <div className="menu__cards">
-        {currentItems.map((item) => (
+          {sortedItems.map((item) => (
             <div key={item.id} className="card">
               <div className="rating">
                 <h4>{item?.stars}</h4>
@@ -133,9 +166,11 @@ function Menu() {
         </div>
         <div className="pagination">
           {pageNumbers.map((number) => (
-            <span 
+            <span
               key={number}
-              className={`page-number ${currentPage === number ? "active__pagination" : ""}`}
+              className={`page-number ${
+                currentPage === number ? "active__pagination" : ""
+              }`}
               onClick={() => paginate(number)}
             >
               {number}

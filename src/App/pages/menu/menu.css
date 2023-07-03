@@ -22,7 +22,7 @@
 }
 
 .categories::-webkit-scrollbar {
-    height: 6px;
+    height: 2px;
 }
 
 .categories::-webkit-scrollbar-thumb {
@@ -36,6 +36,7 @@
     color: var(--secondry-color);
     padding: 6px 12px;
     border-radius: 50px;
+    min-width: fit-content;
     transition: var(--transition-3);
 }
 
@@ -150,6 +151,11 @@
     cursor: pointer;
 }
 
+
+.loader {
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
 
 
 @media (max-width:723px) {
