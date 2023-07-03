@@ -13,7 +13,7 @@
 }
 
 .categories {
-    padding: 8px 0;
+    padding: 8px;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -29,7 +29,14 @@
     border-radius: 10px;
 }
 
+.active__categary {
+    color: var(--white-color) !important;
+    background-color: var(--primary-color) !important;
+}
+
+
 .category {
+    cursor: pointer;
     display: flex;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     background-color: var(--white-color);
