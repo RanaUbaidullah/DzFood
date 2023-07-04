@@ -11,21 +11,7 @@ function Navbar() {
     localStorage.removeItem(Config.userDzFoodToken);
     navigate("/");
   };
-  const menu = document.querySelector('.menu');
-  const sidebar = document.querySelector('.nav__links');
-  
-  menu.addEventListener("click", () => {
-      if (sidebar.classList.contains('active__navbar')) {
-          sidebar.classList.remove('active__navbar');
-      } else {
-          sidebar.classList.add('active__navbar');
-      }
-  });
-  
-  function changeClass(element) {
-      element.classList.toggle('fa-regular');
-      element.classList.toggle('fa-solid');
-  }
+
   return (
     <>
       {/* nav__bar */}

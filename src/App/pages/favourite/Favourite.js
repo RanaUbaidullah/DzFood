@@ -69,9 +69,15 @@ function Favourite() {
     }
   };
 
-  const openPopup = (sid) => {
-    setId(sid);
-  };
+  const popup = document.getElementById("popup");
+  function openPopup(sid){
+    setId(sid)
+    console.log(id)
+    console.log(sid)
+    if (popup) {
+      popup.style.visibility = "visible";
+    }
+  }
 
   // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -87,6 +93,8 @@ function Favourite() {
   const pageNumbers = Array.from({ length: Math.ceil(fdata.length / itemsPerPage) }, (_, i) => i + 1);
 
 
+  
+
   return (
     <>
       <Popup sendid={id} />
@@ -96,7 +104,7 @@ function Favourite() {
           {currentItems.map((item) => {
             if (item) {
               return (
-                <div key={item.id} className="card" onClick={() => openPopup(item.id)}>
+                <div key={item.id} className="card" >
                   <div className="rating">
                     <h4>{item.stars}</h4>
                     <i className="fa-solid fa-star" />
@@ -106,18 +114,19 @@ function Favourite() {
                     <i className="fa-regular fa-heart" />
                   </div>
                   <img
+                  onClick={() => openPopup(item.id)}
                     onLoad={() => handleImageLoad(item.image)}
                     src={handleImageLoad(item.image)}
                     alt="product img"
                   />
-                  <div className="menu__content">
+                  <div className="menu__content" onClick={() => openPopup(item.id)}>
                     <div className="title__price">
                       <h3 className="card__title">{item.title.en}</h3>
                       <span className="price">Rs {item.price ? item.price : 0}</span>
                     </div>
                     <div className="time">
                       <i className="fa-solid fa-stopwatch" />
-                      <span>10-15 mins</span>
+                      <span>{item?.cooking_time} mins</span>
                     </div>
                     <div className="food__type">
                       <span className="type">Burger</span>

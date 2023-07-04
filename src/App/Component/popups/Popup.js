@@ -4,7 +4,8 @@ import "./popup.css";
 function Popup(props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [img, setImg] = useState();
+  console.log(loading)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -14,7 +15,9 @@ function Popup(props) {
         const jsonData = await response.json();
         setData(jsonData.data);
         setLoading(false);
-        console.log(data);
+        setImg(jsonData?.data?.image?Config.digitalOceanLinkProductLargeImg+jsonData?.data?.image:"https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" )
+        
+        console.log(jsonData?.data?.image);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -29,17 +32,17 @@ function Popup(props) {
     }
   }
 
-  const handleImageLoad = (image) => {
-    if (image == null) {
-      return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png";
-    } else {
-      return `https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${image}`;
-    }
-  };
+  // const handleImageLoad = (image) => {
+  //   if (image == null) {
+  //     setImg("https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png")
+  //   } else {
+  //     setImg(`Config.digitalOceanLinkProductLargeImg+${image}`)
+  //   }
+  // };
 
   return (
     <>
-      <div className="card__popup" id="popup">
+    <div className="card__popup" id="popup">
         <i
           className="fa-solid fa-xmark crossicon"
           id="crossicon"
@@ -49,10 +52,8 @@ function Popup(props) {
           <div className="popup__content">
              <img
              className="popupimg"
-                onLoad={() => handleImageLoad(data?.image)}
-                src={handleImageLoad(data?.image)}
+                src={img}
                 alt="product img"
-            
               />
             <h1 className="popup__title">{data?.title?.en}</h1>
             <p className="paragraph">
@@ -71,10 +72,10 @@ function Popup(props) {
               Product Price:
               <span>{data?.price ? data?.price : 0}</span>
               <div className="btns">
-                <a href="#" className="btn">
+                <a href="@" className="btn">
                   Add to Cart
                 </a>
-                <a href="#" className="btn">
+                <a href="@" className="btn">
                   Order Now
                 </a>
               </div>
@@ -108,8 +109,6 @@ function Popup(props) {
                   <span className="input__price"> ({item?.accessory?.price}: {Config.currency}) </span>
                 </div>
                 ))}
-                
-                
               </div>
             </div>: null}
             

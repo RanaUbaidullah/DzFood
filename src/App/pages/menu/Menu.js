@@ -152,7 +152,7 @@ function Menu() {
               <div className="rating">
                 <h4>{item?.stars}</h4>
                 <i className="fa-solid fa-star" />
-                <span>({item?.cooking_time}+)</span>
+                <span>({item.review_count})</span>
               </div>
               {getLocalStorage(Config.userDzFoodToken) ? (
                 <div className="heart">
@@ -163,6 +163,7 @@ function Menu() {
                 onLoad={() => handleImageLoad(item.image)}
                 src={handleImageLoad(item.image)}
                 alt="product img"
+                loading="lazy"
               />
               <div className="menu__content">
                 <div className="title__price">
@@ -173,7 +174,7 @@ function Menu() {
                 </div>
                 <div className="time">
                   <i className="fa-solid fa-stopwatch" />
-                  <span>{item.cooking_time} mins</span>
+                  <span>{item?.cooking_time} mins</span>
                 </div>
                 <div className="food__type">
                   <span className="type">Burger</span>
