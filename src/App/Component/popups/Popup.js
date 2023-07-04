@@ -29,6 +29,14 @@ function Popup(props) {
     }
   }
 
+  const handleImageLoad = (image) => {
+    if (image == null) {
+      return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png";
+    } else {
+      return `https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${image}`;
+    }
+  };
+
   return (
     <>
       <div className="card__popup" id="popup">
@@ -39,11 +47,18 @@ function Popup(props) {
         />
         <div className="popup__product">
           <div className="popup__content">
-            <img
+            {/* <img
               className="popupimg"
               src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${data?.image}`}
               alt="Product_imgage"
-            />
+            /> */}
+             <img
+             className="popupimg"
+                onLoad={() => handleImageLoad(data?.image)}
+                src={handleImageLoad(data?.image)}
+                alt="product img"
+            
+              />
             <h1 className="popup__title">{data?.title?.en}</h1>
             <p className="paragraph">
             {data?.detail?.en}
@@ -62,12 +77,10 @@ function Popup(props) {
               <span>{data?.price ? data?.price : 0}</span>
               <div className="btns">
                 <a href="#" className="btn">
-                  {" "}
-                  Add to Cart{" "}
+                  Add to Cart
                 </a>
                 <a href="#" className="btn">
-                  {" "}
-                  Order Now{" "}
+                  Order Now
                 </a>
               </div>
             </h2>
@@ -87,46 +100,24 @@ function Popup(props) {
                 <label htmlFor="input"> Small </label>
               </div>
             </div>
-            <div className="accessory">
+            {data?.accessories?.[0] ? <div className="accessory">
               <span> Product Accessories </span>
               <div className="input__accessories">
-                <div className="popup__input">
+
+                {data?.accessories?.map((item)=>(
+                    <div key={item?.id} className="popup__input">
                   <div className="checkbox">
                     <input type="checkbox" />
-                    <span> Pepsi Regular </span>
+                    <span>{item?.accessory.title.en}</span>
                   </div>
-                  <span className="input__price"> (+RS:80) </span>
+                  <span className="input__price"> ({item?.accessory?.price}: {Config.currency}) </span>
                 </div>
-                <div className="popup__input">
-                  <div className="checkbox">
-                    <input type="checkbox" />
-                    <span> Pepsi Regular </span>
-                  </div>
-                  <span className="input__price"> (+RS:80) </span>
-                </div>
-                <div className="popup__input">
-                  <div className="checkbox">
-                    <input type="checkbox" />
-                    <span> Pepsi Regular </span>
-                  </div>
-                  <span className="input__price"> (+RS:80) </span>
-                </div>
-                <div className="popup__input">
-                  <div className="checkbox">
-                    <input type="checkbox" />
-                    <span> Pepsi Regular </span>
-                  </div>
-                  <span className="input__price"> (+RS:80) </span>
-                </div>
-                <div className="popup__input">
-                  <div className="checkbox">
-                    <input type="checkbox" />
-                    <span> Pepsi Regular </span>
-                  </div>
-                  <span className="input__price"> (+RS:80) </span>
-                </div>
+                ))}
+                
+                
               </div>
-            </div>
+            </div>: null}
+            
           </div>
         </div>
         <div className="review__section">
