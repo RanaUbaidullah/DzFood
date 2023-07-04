@@ -47,11 +47,6 @@ function Popup(props) {
         />
         <div className="popup__product">
           <div className="popup__content">
-            {/* <img
-              className="popupimg"
-              src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${data?.image}`}
-              alt="Product_imgage"
-            /> */}
              <img
              className="popupimg"
                 onLoad={() => handleImageLoad(data?.image)}
