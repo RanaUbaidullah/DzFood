@@ -1,19 +1,19 @@
 .card__popup {
-    top: 50%;
-    left: 50%;
-    z-index: 4;
-    padding: 60px;
-    gap: 80px;
+    background-color: #fff;
     width: 1200px;
-    overflow-y: scroll;
-    display: flex;
-    position: fixed;
     max-height: 700px;
     visibility: hidden;
+    position: fixed;
+    z-index: 4;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 60px;
+    display: flex;
+    gap: 80px;
     border-radius: 10px;
     flex-direction: column;
-    background-color: #fff;
-    transform: translate(-50%, -50%);
+    overflow-y: scroll;
     box-shadow: 0 4px 100px rgba(0, 0, 0, .5);
 }
 
@@ -24,10 +24,10 @@
 .popup__product {
     justify-content: space-between;
     display: flex;
-    align-items: center;
 }
 
 .popupimg {
+    max-height: 300px;
     border-radius: 10px;
     width: 500px;
 }
@@ -156,17 +156,17 @@
     padding: 0px 20px;
 }
 
-.input {
+.popup__input {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.input span {
+.popup__input span {
     color: var(--secondory-color);
 }
 
-.input .input__price {
+.popup__input .input__price {
     font-size: var(--link-size);
     color: var(--secondory-color);
 }

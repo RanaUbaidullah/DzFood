@@ -1,233 +1,175 @@
-import React from 'react'
-import './popup.css'
-function Popup() {
+import React, { useEffect, useState } from "react";
+import { Config } from "../../constant/Index";
+import "./popup.css";
+function Popup(props) {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${Config.serverUrlProduct}/${props.sendid}`
+        );
+        const jsonData = await response.json();
+        setData(jsonData.data);
+        setLoading(false);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [props.sendid]);
+
+  const popup = document.getElementById("popup");
+  function closePopup() {
+    if (popup) {
+      popup.style.visibility = "hidden";
+    }
+  }
+
   return (
     <>
-    <div class="card__popup" id="popup">
-
-<i class="fa-solid fa-xmark crossicon" id="crossicon"></i>
-
-<div class="popup__product">
-
-    <div class="popup__content">
-
-
-        <img class="popupimg" src="img/cardimg.png" alt="img" />
-
-        <h1 class="popup__title">
-            Ground Beef Tacos
-        </h1>
-
-        <p class="paragraph">
-            Our pride and joy: hand-breaded and fried to
-            perfection in house. 9 pcs of Colonel’s Signature
-            Crispy Fried Chicken. It's finger lickin' good
-        </p>
-
-        <div class="add__remove">
-
-            <div class="plus">
-                <i class="fa-solid fa-plus"></i>
-            </div>
-
-
-            <span class="">
-                1
-            </span>
-
-
-            <div class="minus">
-                <i class="fa-solid fa-minus"></i>
-            </div>
-
-        </div>
-
-        <h2 class="popup__price">
-
-            Product Price:
-
-            <span>
-                $105.99
-            </span>
-
-            <div class="btns">
-
-                <a href="@" class="btn">
-                    Add to Cart
-                </a>
-
-                <a href="@" class="btn">
-                    Order Now
-                </a>
-
-            </div>
-
-        </h2>
-
-    </div>
-
-    <div class="accessories">
-
-        <div class="radios">
-
-            <div class="radio">
-
-                <input type="radio" class="radio__input" name="Large"/>
-                <label for="input">
-                    Large
-                </label>
-
-            </div>
-
-            <div class="radio">
-
-                <input type="radio" class="radio__input" name="Large"/>
-                <label for="input">
-                    Medium
-                </label>
-
-            </div>
-
-            <div class="radio">
-
-                <input type="radio" class="radio__input" name="Large"/>
-                <label for="input">
-                    Small
-                </label>
-
-            </div>
-
-        </div>
-
-        <div class="accessory">
-
-            <span>
-                Product Accessories
-            </span>
-
-            <div class="input__accessories">
-
-                <div class="input">
-
-                    <div class="checkbox">
-                        <input type="checkbox"/>
-                        <span>
-                            Pepsi Regular
-                        </span>
-                    </div>
-
-                    <span class="input__price">
-                        (+RS:80)
-                    </span>
-
-
-                </div>
-
-                <div class="input">
-
-                    <div class="checkbox">
-                        <input type="checkbox"/>
-                        <span>
-                            Pepsi Regular
-                        </span>
-                    </div>
-
-                    <span class="input__price">
-                        (+RS:80)
-                    </span>
-
-
-                </div>
-
-                <div class="input">
-
-                    <div class="checkbox">
-                        <input type="checkbox"/>
-                        <span>
-                            Pepsi Regular
-                        </span>
-                    </div>
-
-                    <span class="input__price">
-                        (+RS:80)
-                    </span>
-
-
-                </div>
-
-                <div class="input">
-                    <div class="checkbox">
-                        <input type="checkbox"/>
-                        <span>
-                            Pepsi Regular
-                        </span>
-                    </div>
-                    <span class="input__price">
-                        (+RS:80)
-                    </span>
-                </div>
-                <div class="input">
-                    <div class="checkbox">
-                        <input type="checkbox"/>
-                        <span>
-                            Pepsi Regular
-                        </span>
-                    </div>
-                    <span class="input__price">
-                        (+RS:80)
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="review__section">
-    <div class="btn__title">
-        <h1 class="review__title">
-            Product Review
-        </h1>
-        <a href="review.html" class="btn">
-            Give Your Review
-        </a>
-    </div>
-    <div class="reviews">
-        <div class="review">
-            <p class="paragraph">
-                "As a satisfied customer of [SaaS Provider], I want to share my positive experience with
-                others. Their software as a service platform has greatly improved the efficiency and
-                productivity of our business operations. The cloud-based solution is user-friendly and
-                regularly updated to stay ahead of the technology curve."
+      <div className="card__popup" id="popup">
+        <i
+          className="fa-solid fa-xmark crossicon"
+          id="crossicon"
+          onClick={closePopup}
+        />
+        <div className="popup__product">
+          <div className="popup__content">
+            <img
+              className="popupimg"
+              src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${data?.image}`}
+              alt="Product_imgage"
+            />
+            <h1 className="popup__title">{data?.title?.en}</h1>
+            <p className="paragraph">
+            {data?.detail?.en}
             </p>
-            <img class="reviewimg" src="img/reviewprofile.png" alt=""/>
-        </div>
-        <div class="name__rating">
-            <div class="reviewrating">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
+            <div className="add__remove">
+              <div className="plus">
+                <i className="fa-solid fa-plus" />
+              </div>
+              <span className=""> 1 </span>
+              <div className="minus">
+                <i className="fa-solid fa-minus" />
+              </div>
             </div>
-            <span class="reviewname">
-                Savannah Nguyen
-            </span>
-            <span class="reviewtype">
-                Customer
-            </span>
+            <h2 className="popup__price">
+              Product Price:
+              <span>{data?.price ? data?.price : 0}</span>
+              <div className="btns">
+                <a href="#" className="btn">
+                  {" "}
+                  Add to Cart{" "}
+                </a>
+                <a href="#" className="btn">
+                  {" "}
+                  Order Now{" "}
+                </a>
+              </div>
+            </h2>
+          </div>
+          <div className="accessories">
+            <div className="radios">
+              <div className="radio">
+                <input type="radio" name="Large" />
+                <label htmlFor="input"> Large </label>
+              </div>
+              <div className="radio">
+                <input type="radio" name="Large" />
+                <label htmlFor="input"> Medium </label>
+              </div>
+              <div className="radio">
+                <input type="radio" name="Large" />
+                <label htmlFor="input"> Small </label>
+              </div>
+            </div>
+            <div className="accessory">
+              <span> Product Accessories </span>
+              <div className="input__accessories">
+                <div className="popup__input">
+                  <div className="checkbox">
+                    <input type="checkbox" />
+                    <span> Pepsi Regular </span>
+                  </div>
+                  <span className="input__price"> (+RS:80) </span>
+                </div>
+                <div className="popup__input">
+                  <div className="checkbox">
+                    <input type="checkbox" />
+                    <span> Pepsi Regular </span>
+                  </div>
+                  <span className="input__price"> (+RS:80) </span>
+                </div>
+                <div className="popup__input">
+                  <div className="checkbox">
+                    <input type="checkbox" />
+                    <span> Pepsi Regular </span>
+                  </div>
+                  <span className="input__price"> (+RS:80) </span>
+                </div>
+                <div className="popup__input">
+                  <div className="checkbox">
+                    <input type="checkbox" />
+                    <span> Pepsi Regular </span>
+                  </div>
+                  <span className="input__price"> (+RS:80) </span>
+                </div>
+                <div className="popup__input">
+                  <div className="checkbox">
+                    <input type="checkbox" />
+                    <span> Pepsi Regular </span>
+                  </div>
+                  <span className="input__price"> (+RS:80) </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="sliders">
-
-            <div class="slider"></div>
-            <div class="slider active__slider"></div>
-            <div class="slider"></div>
-
+        <div className="review__section">
+          <div className="btn__title">
+            <h1 className="review__title">Product Review</h1>
+            <a href="review.html" className="btn">
+              {" "}
+              Give Your Review{" "}
+            </a>
+          </div>
+          <div className="reviews">
+            <div className="review">
+              <p className="paragraph">
+                "As a satisfied customer of [SaaS Provider], I want to share my
+                positive experience with others. Their software as a service
+                platform has greatly improved the efficiency and productivity of
+                our business operations. The cloud-based solution is
+                user-friendly and regularly updated to stay ahead of the
+                technology curve."
+              </p>
+              <img className="reviewimg" src="img/reviewprofile.png" alt="" />
+            </div>
+            <div className="name__rating">
+              <div className="reviewrating">
+                <i className="fa-solid fa-star" />
+                <i className="fa-solid fa-star" />
+                <i className="fa-solid fa-star" />
+                <i className="fa-solid fa-star" />
+                <i className="fa-solid fa-star" />
+              </div>
+              <span className="reviewname"> Savannah Nguyen </span>
+              <span className="reviewtype"> Customer </span>
+            </div>
+            <div className="sliders">
+              <div className="slider" />
+              <div className="slider activeslider" />
+              <div className="slider" />
+            </div>
+          </div>
         </div>
-    </div>
-</div>
-
-</div>
+      </div>
     </>
-  )
+  );
 }
 
-export default Popup
+export default Popup;

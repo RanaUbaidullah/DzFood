@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./menu.css";
 import { Config } from "../../constant/Index";
 import { getLocalStorage } from "../../Component/local_storage";
+import Popup from "../../Component/popups/Popup";
 function Menu() {
-  const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,9 +11,7 @@ function Menu() {
   const [catadata, setCatadata] = useState([]);
   const [sortOption, setSortOption] = useState("Price");
   const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const popupRef = useRef(null);
-
+  const [id, setId] = useState()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,29 +38,54 @@ function Menu() {
     fetchDatacata();
   }, []);
 
-  const toggleOptions = (event) => {
-    event.stopPropagation();
-    setShow((prevState) => !prevState);
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
   };
-  
-  
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        setShow(false);
-      }
-    };
-  
-    if (show) {
-      window.addEventListener("click", handleOutsideClick);
+
+  const handleImageLoad = (image) => {
+    if (image == null) {
+      return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png";
     } else {
-      window.removeEventListener("click", handleOutsideClick);
+      return `https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${image}`;
     }
-  
-    return () => {
-      window.removeEventListener("click", handleOutsideClick);
-    };
-  }, [show]);
+  };
+
+  const sortItems = (event) => {
+    setSortOption(event.target.value);
+    setCurrentPage(1);
+  };
+
+  const filteredItems =
+    selectedCategory === "All"
+      ? data
+      : data.filter((item) => item.category_id === selectedCategory);
+
+  const sortedItems = filteredItems.sort((a, b) => {
+    if (sortOption === "Rating") {
+      return b.stars - a.stars;
+    } else if (sortOption === "Latest") {
+      return b.id - a.id;
+    } else if (sortOption === "Price") {
+      return a.price - b.price;
+    } else if (sortOption === "Oldest") {
+      return a.id - b.id;
+    }
+    return 0;
+  });
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedItems.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(sortedItems.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   if (loading) {
     return (
@@ -73,58 +96,19 @@ function Menu() {
       />
     );
   }
-
-  const handleImageLoad = (image) => {
-    if (image == null) {
-      return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png";
-    } else {
-      return `https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${image}`;
+  const popup = document.getElementById("popup");
+  function openPopup(sid){
+    setId(sid)
+    console.log(id)
+    console.log(sid)
+    if (popup) {
+      popup.style.visibility = "visible";
     }
-  };
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setCurrentPage(1);
-  };
-
-  const filteredItems =
-    selectedCategory === "All"
-      ? data
-      : data.filter((item) => item.category_id === selectedCategory);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
-
-  const sortItems = (option) => {
-    setSortOption(option);
-    setCurrentPage(1);
-  };
-
-  const sortedItems = currentItems.sort((a, b) => {
-    if (sortOption === "Newest") {
-      return b.id - a.id;
-    } else if (sortOption === "Oldest") {
-      return a.id - b.price;
-    } else if (sortOption === "Price") {
-      return a.price - b.price;
-    } else if (sortOption === "Rating") {
-      return b.stars - a.stars;
-    }
-    return 0;
-  });
-
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
-    pageNumbers.push(i);
   }
 
   return (
     <>
-      <div className="menu__section">
+  <div className="menu__section">
         <div className="category__filter">
           <div className="categories">
             <div
@@ -148,44 +132,33 @@ function Menu() {
             ))}
           </div>
 
-          <div className="filter">
-            <span className="sort">Sort by:</span>
-            <div className="selected" id="sort" onClick={(event) => toggleOptions(event)}>
-              <span>{sortOption}</span>
-              <i className="bx bx-chevron-down" />
-            </div>
-            {show && (
-              <div className="options" id="options" ref={popupRef}>
-                <span className="option" onClick={() => sortItems("Rating")}>
-                  Rating
-                </span>
-                <span className="option" onClick={() => sortItems("Price")}>
-                  Price
-                </span>
-                <span className="option" onClick={() => sortItems("Newest")}>
-                  Newest
-                </span>
-                <span className="option" onClick={() => sortItems("Oldest")}>
-                  Oldest
-                </span>
-              </div>
-            )}
+          <div className="sort__filter">
+            <span>Sort by:</span>
+            <select className="filter" onChange={sortItems} value={sortOption}>
+              <option value="Rating">Rating</option>
+              <option value="Latest">Latest</option>
+              <option value="Price">Price</option>
+              <option value="Oldest">Oldest</option>
+            </select>
           </div>
         </div>
-
-        <div className="menu__cards">
-          {sortedItems.map((item) => (
-            <div key={item.id} className="card">
+        {/* <Popup/> */}
+        <Popup sendid={id}/>
+        {/* <Popup/> */}
+        <div className="menu__cards" >
+          {currentItems.map((item) => (
+            <div key={item.id} className="card" onClick={()=>(openPopup(item.id))}>
+              
               <div className="rating">
                 <h4>{item?.stars}</h4>
                 <i className="fa-solid fa-star" />
                 <span>({item?.cooking_time}+)</span>
               </div>
               {getLocalStorage(Config.userDzFoodToken) ? (
-              <div className="heart">
-                <i className="fa-regular fa-heart" />
-              </div>): null
-              }
+                <div className="heart">
+                  <i className="fa-regular fa-heart" />
+                </div>
+              ) : null}
               <img
                 onLoad={() => handleImageLoad(item.image)}
                 src={handleImageLoad(item.image)}
@@ -211,6 +184,7 @@ function Menu() {
             </div>
           ))}
         </div>
+
         <div className="pagination">
           {pageNumbers.map((number) => (
             <span
