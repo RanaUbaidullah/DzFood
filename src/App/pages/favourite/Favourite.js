@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Config } from "../../constant/Index";
-
+import Popup from "../../Component/popups/Popup";
 function Favourite() {
-  const [data, setData] = useState();
-  const [fdata, setFdata] = useState();
+  const [data, setData] = useState([]);
+  const [fdata, setFdata] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [id, setId] = useState()
   const fetchDatap = async () => {
     try {
       const response = await fetch(Config.serverUrlProduct);
@@ -16,17 +16,16 @@ function Favourite() {
     }
   };
 
-  const fetchDataf = async () => {
+  const fetchDataf = async () => { 
     try {
       const token = '241|99nrXNA44oarRLr4QFJueCwNxSabtqMuMlBAeDlV';
       const response = await fetch(Config.serverUrlMe, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      }); 
       const jsonData = await response.json();
       setFdata(jsonData.data.user.favourites);
-      console.log(fdata)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -38,45 +37,65 @@ function Favourite() {
   }, []);
 
   useEffect(() => {
-    if (data && fdata) {
+    if (data.length > 0 && fdata.length > 0) { 
       setIsLoading(false);
     }
   }, [data, fdata]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <img
+        className="loader"
+        src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921"
+        alt="logo"
+      />
+    );
   }
 
+  const productLookup = {};
+  data.forEach((item) => {
+    productLookup[item.id] = item;
+  });
+  const popup = document.getElementById("popup");
+  function openPopup(sid){
+    setId(sid)
+    console.log(id)
+    console.log(sid)
+    if (popup) {
+      popup.style.visibility = "visible";
+    }
+  }
   return (
     <>
+      {/* <Popup/> */}
+      <Popup sendid={id}/>
+        {/* <Popup/> */}
       <div className="menu__section">
         <h1 style={{ color: "#FE734D" }}>Favourite</h1>
         <div className="menu__cards">
           {fdata.map((fav) => {
-            const matchedData = data.find((item) => item.id === fav.id);
-            if (matchedData) {
+            const item = productLookup[fav?.product_id];
+            if (item) {
               return (
-                <div key={matchedData.id} className="card">
+                <div key={item.id} className="card" onClick={()=>(openPopup(item.id))}>
                   {/* card rating */}
-                  <div className="rating">
-                    <h4>{matchedData.stars}</h4>
+                  <div className="rating"> 
+                    <h4>{item.stars}</h4>
                     <i className="fa-solid fa-star" />
-                    <span>({matchedData.cooking_time}+)</span>
+                    <span>({item.cooking_time}+)</span> 
                   </div>
                   <div className="heart">
-                    <i
-                      className="fa-regular fa-heart"
-                    />
+                    <i className="fa-regular fa-heart" />
                   </div>
                   <img
-                    src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${matchedData.image}`}
+                    src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${item.image}`}
                     alt="product img"
                   />
                   <div className="menu__content">
                     <div className="title__price">
-                      <h3 className="card__title">{matchedData.title.en}</h3>
+                      <h3 className="card__title">{item.title.en}</h3>
                       <span className="price">
-                        Rs {matchedData.price ? matchedData.price : 0}
+                        Rs {item.price ? item.price : 0}
                       </span>
                     </div>
                     <div className="time">
