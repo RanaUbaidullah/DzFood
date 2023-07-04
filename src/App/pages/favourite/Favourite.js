@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Config } from "../../constant/Index";
 import Popup from "../../Component/popups/Popup";
+
 function Favourite() {
   const [data, setData] = useState([]);
   const [fdata, setFdata] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [id, setId] = useState()
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [id, setId] = useState(null);
+
   const fetchDatap = async () => {
     try {
       const response = await fetch(Config.serverUrlProduct);
@@ -16,14 +20,14 @@ function Favourite() {
     }
   };
 
-  const fetchDataf = async () => { 
+  const fetchDataf = async () => {
     try {
       const token = '241|99nrXNA44oarRLr4QFJueCwNxSabtqMuMlBAeDlV';
       const response = await fetch(Config.serverUrlMe, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }); 
+      });
       const jsonData = await response.json();
       setFdata(jsonData.data.user.favourites);
     } catch (error) {
@@ -32,12 +36,12 @@ function Favourite() {
   };
 
   useEffect(() => {
-    fetchDatap();  
+    fetchDatap();
     fetchDataf();
   }, []);
 
   useEffect(() => {
-    if (data.length > 0 && fdata.length > 0) { 
+    if (data.length > 0 && fdata.length > 0) {
       setIsLoading(false);
     }
   }, [data, fdata]);
@@ -56,47 +60,60 @@ function Favourite() {
   data.forEach((item) => {
     productLookup[item.id] = item;
   });
-  const popup = document.getElementById("popup");
-  function openPopup(sid){
-    setId(sid)
-    console.log(id)
-    console.log(sid)
-    if (popup) {
-      popup.style.visibility = "visible";
+
+  const handleImageLoad = (image) => {
+    if (image == null) {
+      return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png";
+    } else {
+      return `https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${image}`;
     }
-  }
+  };
+
+  const openPopup = (sid) => {
+    setId(sid);
+  };
+
+  // Pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = fdata
+    .map((fav) => productLookup[fav?.product_id])
+    .slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const pageNumbers = Array.from({ length: Math.ceil(fdata.length / itemsPerPage) }, (_, i) => i + 1);
+
+
   return (
     <>
-      {/* <Popup/> */}
-      <Popup sendid={id}/>
-        {/* <Popup/> */}
+      <Popup sendid={id} />
       <div className="menu__section">
         <h1 style={{ color: "#FE734D" }}>Favourite</h1>
         <div className="menu__cards">
-          {fdata.map((fav) => {
-            const item = productLookup[fav?.product_id];
+          {currentItems.map((item) => {
             if (item) {
               return (
-                <div key={item.id} className="card" onClick={()=>(openPopup(item.id))}>
-                  {/* card rating */}
-                  <div className="rating"> 
+                <div key={item.id} className="card" onClick={() => openPopup(item.id)}>
+                  <div className="rating">
                     <h4>{item.stars}</h4>
                     <i className="fa-solid fa-star" />
-                    <span>({item.cooking_time}+)</span> 
+                    <span>({item.review_count})</span>
                   </div>
                   <div className="heart">
                     <i className="fa-regular fa-heart" />
                   </div>
                   <img
-                    src={`https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${item.image}`}
+                    onLoad={() => handleImageLoad(item.image)}
+                    src={handleImageLoad(item.image)}
                     alt="product img"
                   />
                   <div className="menu__content">
                     <div className="title__price">
                       <h3 className="card__title">{item.title.en}</h3>
-                      <span className="price">
-                        Rs {item.price ? item.price : 0}
-                      </span>
+                      <span className="price">Rs {item.price ? item.price : 0}</span>
                     </div>
                     <div className="time">
                       <i className="fa-solid fa-stopwatch" />
@@ -114,6 +131,20 @@ function Favourite() {
               return null;
             }
           })}
+        </div>
+
+        <div className="pagination">
+          {pageNumbers.map((number) => (
+            <span
+              key={number}
+              className={`page-number ${
+                currentPage === number ? "active__pagination" : ""
+              }`}
+              onClick={() => paginate(number)}
+            >
+              {number}
+            </span>
+          ))}
         </div>
       </div>
     </>
