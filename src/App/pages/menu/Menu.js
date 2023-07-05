@@ -135,7 +135,7 @@ function Menu() {
           All
         </div>
 
-        {/* Dynamic category options */}
+        {/* Dynamic category  */}
         {catadata.map((item) => (
           <div
             key={item.id}

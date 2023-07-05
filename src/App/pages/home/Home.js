@@ -6,7 +6,6 @@ function Index() {
   return (
     <>
      {/* <!-- hero__section --> */}
-    {/* <!-- hero__section --> */}
 
 
     <div class="hero__section">
