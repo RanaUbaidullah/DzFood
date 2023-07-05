@@ -33,16 +33,13 @@ function Menu() {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
     fetchDatacata();
   }, []);
-
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
-
   const handleImageLoad = (image) => {
     if (image == null) {
       return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png";
@@ -50,17 +47,14 @@ function Menu() {
       return `https://danzee.fra1.digitaloceanspaces.com/dzfood/admin/images/products/large/${image}`;
     }
   };
-
   const sortItems = (event) => {
     setSortOption(event.target.value);
     setCurrentPage(1);
   };
-
   const filteredItems =
     selectedCategory === "All"
       ? data
       : data.filter((item) => item.category_id === selectedCategory);
-
   const sortedItems = filteredItems.sort((a, b) => {
     if (sortOption === "Rating") {
       return b.stars - a.stars;
@@ -73,20 +67,16 @@ function Menu() {
     }
     return 0;
   });
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sortedItems.slice(indexOfFirstItem, indexOfLastItem);
-
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(sortedItems.length / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
-
   if (loading) {
     return (
       <img
@@ -105,7 +95,6 @@ function Menu() {
       popup.style.visibility = "visible";
     }
   }
-
   return (
     <>
   <div className="menu__section">
@@ -147,7 +136,7 @@ function Menu() {
         {/* <Popup/> */}
         <div className="menu__cards" >
           {currentItems.map((item) => (
-            <div key={item.id} className="card" onClick={()=>(openPopup(item.id))}>
+            <div key={item.id} className="card" >
               
               <div className="rating">
                 <h4>{item?.stars}</h4>
@@ -160,12 +149,13 @@ function Menu() {
                 </div>
               ) : null}
               <img
+              onClick={()=>(openPopup(item.id))}
                 onLoad={() => handleImageLoad(item.image)}
                 src={handleImageLoad(item.image)}
                 alt="product img"
                 loading="lazy"
               />
-              <div className="menu__content">
+              <div className="menu__content" onClick={()=>(openPopup(item.id))}>
                 <div className="title__price">
                   <h3 className="card__title">{item?.title?.en}</h3>
                   <span className="price">
@@ -185,7 +175,6 @@ function Menu() {
             </div>
           ))}
         </div>
-
         <div className="pagination">
           {pageNumbers.map((number) => (
             <span
@@ -203,5 +192,4 @@ function Menu() {
     </>
   );
 }
-
 export default Menu;
