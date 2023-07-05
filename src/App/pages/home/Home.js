@@ -126,8 +126,6 @@ function Index() {
 
 
 
-    {/* <!-- menu__section --> */}
-    {/* <!-- menu__section -->/ */}
 
 
     <div class="menu__section">
