@@ -63,6 +63,8 @@ function card() {
 
     </div>
 
+    <span class="add">Add to Cart</span>
+
 </div>
 
 

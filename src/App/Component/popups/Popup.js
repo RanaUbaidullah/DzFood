@@ -3,22 +3,26 @@ import { Config } from "../../constant/Index";
 import "./popup.css";
 
 function Popup(props) {
+  // State for product data and loading status
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // State for product image
   const [img, setImg] = useState();
-  
+
   // State for quantity
-  const [quantity, setQuantity] = useState(1); 
+  const [quantity, setQuantity] = useState(1);
 
   // State for accessory quantities
-  const [accessoryQuantities, setAccessoryQuantities] = useState({}); 
+  const [accessoryQuantities, setAccessoryQuantities] = useState({});
+
+  // Calculate initial product price
+  const initialProductPrice = data?.price || 0;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${Config.serverUrlProduct}/${props.sendid}`
-        );
+        const response = await fetch(`${Config.serverUrlProduct}/${props.sendid}`);
         const jsonData = await response.json();
         setData(jsonData.data);
         setLoading(false);
@@ -33,24 +37,24 @@ function Popup(props) {
     };
 
     fetchData();
-  }, [props.sendid]);
+  }, [props.sendid]); // Fetch product data on component mount and when props.sendid changes
 
   function closePopup() {
     const popup = document.getElementById("popup");
     if (popup) {
       popup.style.visibility = "hidden";
     }
-  }
+  } // Close the popup
 
   function handleQuantityDecrease() {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
-  }
+  } // Decrease the quantity
 
   function handleQuantityIncrease() {
     setQuantity(quantity + 1);
-  }
+  } // Increase the quantity
 
   function handleAccessoryQuantityDecrease(accessoryId) {
     if (accessoryQuantities[accessoryId] > 1) {
@@ -59,14 +63,14 @@ function Popup(props) {
         [accessoryId]: prevQuantities[accessoryId] - 1,
       }));
     }
-  }
+  } // Decrease the quantity of a specific accessory
 
   function handleAccessoryQuantityIncrease(accessoryId) {
     setAccessoryQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [accessoryId]: (prevQuantities[accessoryId] || 0) + 1,
+      [accessoryId]: (prevQuantities[accessoryId] || 1) + 1,
     }));
-  }
+  } // Increase the quantity of a specific accessory
 
   return (
     <>
@@ -131,10 +135,7 @@ function Popup(props) {
                       <div className="add__remove">
                         <div
                           className="minus"
-                          onClick={() =>
-                            handleAccessoryQuantityDecrease(item?.id)
-                          }
-                        >
+                          onClick={() =>handleAccessoryQuantityDecrease(item?.id)}>
                           <i className="fa-solid fa-minus" />
                         </div>
                         <span className="">
@@ -151,8 +152,8 @@ function Popup(props) {
                       </div>
                       <span className="input__price">
                         (
-                        {item?.accessory?.price * accessoryQuantities[item?.id]}
-                        : {Config.currency}){" "}
+                        {item?.accessory?.price}
+                        : {Config.currency})
                       </span>
                     </div>
                   ))}
