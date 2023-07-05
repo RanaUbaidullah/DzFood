@@ -66,7 +66,6 @@ function Index() {
 
 
     {/* <!-- services__section --> */}
-    {/* <!-- services__section --> */}
 
 
 
