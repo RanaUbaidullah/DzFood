@@ -23,6 +23,9 @@
 
 .subheading {
     border-bottom: 1px solid var(--primary-color);
+    font-size: var(--normal-size);
+    color: var(--secondory-color);
+    font-weight: var(--normal-font-weight);
 }
 
 .calculation {
@@ -141,6 +144,7 @@
     flex-direction: column;
     gap: 10px;
     align-items: center;
+    
 }
 
 .cart__items .subheading{
@@ -149,6 +153,10 @@
     align-items: center;
     gap: 10px;
     padding: 6px 0;
+    font-size: var(--normal-size);
+    color: var(--secondory-color);
+    font-weight: var(--normal-font-weight);
+    text-align: center;
 }
 
 .cart__items .subheading i{
@@ -157,6 +165,13 @@
     border: 1px solid var(--primary-color);
     border-radius: 50%;
 }
+
+
+/* cart cards */
+
+
+
+
 
 
 
