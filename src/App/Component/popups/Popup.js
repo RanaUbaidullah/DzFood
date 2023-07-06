@@ -19,6 +19,11 @@ function Popup(props) {
   // Calculate initial product price
   const initialProductPrice = data?.price || 0;
 
+
+  // State for product size
+ const [productSize, setProductSize] = useState("Large");
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,6 +43,36 @@ function Popup(props) {
 
     fetchData();
   }, [props.sendid]); // Fetch product data on component mount and when props.sendid changes
+
+
+  function addToCart() {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const newItem = {
+      id: data.id,
+      title: data.title,
+      price: data.price,
+      quantity: quantity,
+      size: productSize,
+      image: img,
+      accessories: data.accessories.map((item) => {
+        const accessoryData = item.accessory;
+        const accessoryQuantity = accessoryQuantities[item.id] || 0;
+        return {
+          id: accessoryData.id,
+          title: accessoryData.title,
+          price: accessoryData.price,
+          quantity: accessoryQuantity,
+        };
+      }),
+    };
+    cartItems.push(newItem);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    alert("Item added to cart!");
+  }
+  
+
+
+
 
   function closePopup() {
     const popup = document.getElementById("popup");
@@ -98,9 +133,9 @@ function Popup(props) {
               Product Price:
               <span>{data?.price ? data?.price * quantity : 0}</span>
               <div className="btns">
-                <a href="@" className="btn">
-                  Add to Cart
-                </a>
+              <button className="btn" onClick={addToCart}>
+            Add to Cart
+          </button>
                 <a href="order_place_detail" className="btn">
                   Order Now
                 </a>
@@ -108,19 +143,37 @@ function Popup(props) {
             </h2>
           </div>
           <div className="accessories">
-            <div className="radios">
-              <div className="radio">
-                <input type="radio" name="Large" />
-                <label htmlFor="input"> Large </label>
-              </div>
-              <div className="radio">
-                <input type="radio" name="Large" />
-                <label htmlFor="input"> Medium </label>
-              </div>
-              <div className="radio">
-                <input type="radio" name="Large" />
-                <label htmlFor="input"> Small </label>
-              </div>
+          <div className="radios">
+            <div className="radio">
+              <input
+                type="radio"
+                name="productSize"
+                value="Large"
+                checked={productSize === "Large"}
+                onChange={() => setProductSize("Large")}
+              />
+              <label htmlFor="input"> Large </label>
+            </div>
+            <div className="radio">
+              <input
+                type="radio"
+                name="productSize"
+                value="Medium"
+                checked={productSize === "Medium"}
+                onChange={() => setProductSize("Medium")}
+              />
+              <label htmlFor="input"> Medium </label>
+            </div>
+            <div className="radio">
+              <input
+                type="radio"
+                name="productSize"
+                value="Small"
+                checked={productSize === "Small"}
+                onChange={() => setProductSize("Small")}
+              />
+              <label htmlFor="input"> Small </label>
+            </div>
             </div>
             {data?.accessories?.[0] ? (
               <div className="accessory">
