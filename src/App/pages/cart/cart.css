@@ -288,9 +288,17 @@
 
 .card__accessories{
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
     justify-content: space-between;
     padding: 10px;
+}
+
+.accessoriy{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .acces__addrem{
@@ -298,7 +306,8 @@
     gap: 30px;
     align-items: center;
 }
-.acces__addrem span{
+.acces__addrem>span{
+    width: 150px;
     display: flex;
     gap: 10px;
     font-size: var(--medium-size);

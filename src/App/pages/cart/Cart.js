@@ -89,6 +89,29 @@ function CartItem({ item, cartItems, setCartItems }) {
     setCartItems(updatedCartItems);
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
+  const handleToggleAccessory = (itemId, accessoryId, accessoryPrice) => {
+    const updatedCartItems = cartItems.map((item) => {
+      if (item.id === itemId) {
+        const updatedAccessories = item.accessories.map((accessory) => {
+          if (accessory.id === accessoryId) {
+            const updatedChecked = !accessory.checked;
+            return {
+              ...accessory,
+              checked: updatedChecked,
+            };
+          }
+          return accessory;
+        });
+        return {
+          ...item,
+          accessories: updatedAccessories,
+        };
+      }
+      return item;
+    });
+    setCartItems(updatedCartItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+  };
 
   return (
     <Fragment key={item.id}>
@@ -139,7 +162,7 @@ function CartItem({ item, cartItems, setCartItems }) {
         {showAccessories && item.accessories.length > 0 && (
           <div className="card__accessories">
             {item.accessories.map((accessory) => (
-              <Fragment key={accessory.id}>
+              <div className="accessoriy" key={accessory.id}>
                 <div className="acces__addrem">
                   <span>
                     <input
@@ -177,7 +200,7 @@ function CartItem({ item, cartItems, setCartItems }) {
                 <span className="accessories__price">
                   {accessory.quantity * accessory.price}$
                 </span>
-              </Fragment>
+              </div>
             ))}
           </div>
         )}
@@ -194,29 +217,6 @@ function Cart() {
     setCartItems(storedCartItems);
   }, []);
 
-  const handleToggleAccessory = (itemId, accessoryId, accessoryPrice) => {
-    const updatedCartItems = cartItems.map((item) => {
-      if (item.id === itemId) {
-        const updatedAccessories = item.accessories.map((accessory) => {
-          if (accessory.id === accessoryId) {
-            const updatedChecked = !accessory.checked;
-            return {
-              ...accessory,
-              checked: updatedChecked,
-            };
-          }
-          return accessory;
-        });
-        return {
-          ...item,
-          accessories: updatedAccessories,
-        };
-      }
-      return item;
-    });
-    setCartItems(updatedCartItems);
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  };
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
