@@ -23,6 +23,7 @@ function Menu() {
         const jsonData = await response.json();
         setData(jsonData.data);
         setLoading(false);
+        console.log(data)
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
@@ -41,7 +42,7 @@ function Menu() {
 
     fetchData(); // Fetch product data
     fetchDatacata(); // Fetch category data
-  }, []);
+  }, []); 
 
   const handleCategoryClick = (category) => {
     // Update selected category and reset current page

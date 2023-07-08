@@ -79,7 +79,7 @@ function Popup(props) {
   }
   
 
-
+console.log(loading)
 
 
   function closePopup() {
@@ -139,7 +139,7 @@ function Popup(props) {
             </div>
             <h2 className="popup__price">
               Product Price:
-              <span>{data?.price ? data?.price * quantity : 0}{Config.currency}</span>
+              <span>{data?.price ? data?.price * quantity : initialProductPrice}{Config.currency}</span>
               <div className="btns">
               <button className="btn" onClick={addToCart}>
             Add to Cart

@@ -40,7 +40,7 @@ function Login() {
       const responseData = await response.json();
       // const { access_token, token_type } = responseData.data;
       console.log(responseData);
-      if (responseData.message == "successfully") {
+      if (responseData.message === "successfully") {
         setLocalStorage(
           Config.userDzFoodToken,
           responseData?.data?.access_token
@@ -60,7 +60,7 @@ function Login() {
       {/* <!-- login section --> */}
       <div className="login__section">
         <div className="login__img">
-          <img src="img/loginimg.png" alt="Food 3d image" />
+          <img src="img/loginimg.png" alt="Food 3d" />
         </div>
 
         <form className="login__form">
