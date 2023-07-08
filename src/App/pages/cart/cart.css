@@ -179,7 +179,6 @@
     position: relative;
     height: fit-content;
     border-radius: 10px 10px 0 0;
-    border-bottom: 1px solid var(--primary-color);
     display: flex;
     align-items: start;
 }
@@ -287,6 +286,7 @@
 /* card__accessories */
 
 .card__accessories{
+    border-top: 1px solid var(--primary-color);
     display: flex;
     flex-direction: column;
     align-items: start;

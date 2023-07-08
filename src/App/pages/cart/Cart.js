@@ -1,5 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
+import { Config } from "../../constant/Index";
 import "./cart.css";
+import { Link } from "react-router-dom";
 
 function CartItem({ item, cartItems, setCartItems }) {
   const [showAccessories, setShowAccessories] = useState(false);
@@ -126,7 +128,7 @@ function CartItem({ item, cartItems, setCartItems }) {
               <h2 className="card__title">{item.title.en}</h2>
 
               <span className="card__price">
-                ${item.price ? item.price : 0}
+              {Config.currency}{item.price ? item.price : 0}
                 <i
                   className="cart__trash fa-solid fa-trash"
                   onClick={() => handleRemoveItem(item.id)}
@@ -149,10 +151,13 @@ function CartItem({ item, cartItems, setCartItems }) {
               </div>
             </div>
 
-            <button className="detail__btn btn" onClick={handleToggleAccessories}>
+            {item.accessories[0]?
+              <button className="detail__btn btn" onClick={handleToggleAccessories}>
               Details
               <i className="bx bx-chevron-down"></i>
             </button>
+            : null
+            }
 
             <span className="card__price total__price">
               ${item.quantity * item.price}
@@ -240,7 +245,7 @@ function Cart() {
             <div
               className="subtotal">
               <span className="text">Sub Total :</span>
-              <span className="price">Rs 0</span>
+              <span className="price">Rs {calculateTotalPrice()}</span>
             </div>
             <div className="subtotal">
               <span className="text">Delivery Fee :</span>
@@ -249,7 +254,7 @@ function Cart() {
             <hr />
             <div className="total">
               <span className="text">Total :</span>
-              <span className="price">Rs {calculateTotalPrice()}</span>
+              <span className="price">Rs {calculateTotalPrice() + 50}</span>
             </div>
           </div>
           <div className="checkout">
@@ -268,7 +273,8 @@ function Cart() {
       </div>
       <div className="cart__items">
         <h3 className="subheading">
-          <i className="bx bx-chevron-left" />
+          <Link to="/menu"><i className="bx bx-chevron-left" />
+          </Link>
           Items From Your Cart
         </h3>
         {cartItems.length === 0 ? (

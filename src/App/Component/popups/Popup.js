@@ -47,6 +47,14 @@ function Popup(props) {
 
   function addToCart() {
     const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  
+    // Check if the product already exists in the cart
+    const existingItem = cartItems.find((item) => item.id === data.id);
+    if (existingItem) {
+      alert("Product already in cart!");
+      return;
+    }
+  
     const newItem = {
       id: data.id,
       title: data.title,
@@ -131,7 +139,7 @@ function Popup(props) {
             </div>
             <h2 className="popup__price">
               Product Price:
-              <span>{data?.price ? data?.price * quantity : 0}</span>
+              <span>{data?.price ? data?.price * quantity : 0}{Config.currency}</span>
               <div className="btns">
               <button className="btn" onClick={addToCart}>
             Add to Cart
